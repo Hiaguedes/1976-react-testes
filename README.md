@@ -1,68 +1,84 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Testes no React
 
-## Available Scripts
+Quando escrevemos testes automatizados para aplicações em React, provavelmente uma grande parte dos nossos testes será sobre algum componente de UI e não apenas funções de regras de negócio. Por isso, precisamos de uma biblioteca que nos auxilie a interagir com o DOM, renderizando e encontrando os elementos que precisamos verificar nos testes.
 
-In the project directory, you can run:
+Por muito tempo a principal ferramenta para isso foi o Enzyme, porém alguns anos atrás, o React Testing Library surgiu com uma abordagem centrada no usuário e com padrões para enfatizar boas práticas de semântica e acessibilidade. A biblioteca ganhou bastante força e hoje já faz parte do pacote padrão de uma aplicação feita com o Create React App, por isso vamos usá-la aqui no curso.
 
-### `npm start`
+Uma das maiores vantagens de escrever nossos testes focados em como os usuários interagem com nossa aplicação é que conseguimos garantir que nossos cenários de teste se parecem ainda mais com os casos do mundo real. Além disso, passamos a nos preocupar muito mais com a funcionalidade da aplicação e não com implementações internas dos componentes, como estados e ciclos de vida. O que faz com que nossos testes quebrem cada vez menos por mudanças na forma de implementar, em vez de garantir que a funcionalidade se mantenha inalterada.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Uma abordagem inicial para testes com react
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Por padrão o react vem com a biblioteca do jest instalada e outro componente do próprio react que é o `@testing-library/react` (vwem outras também mas talvez isso seja abordado mais para frente) e com elas podemos garantir que certos elementos estão sempre sendo mostrados em tela
 
-### `npm test`
+Uma estrutura minima de importação pode ser a que está sendo mostrada abaixo
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```js
+import React from 'react';
+import App from './App';
+import { render, screen } from '@testing-library/react';
+```
 
-### `npm run build`
+Dentro de um arquivo que pode ter o nome `App.test.js` ou `App.spec.js` (mas mesmo com o nome precisamos importar o componente que vai ser testado o nome é somente por semantica de projeto mesmo) e com isso podemos testar nosso componente com a seguinte estrutura (describe, test, expect) que descreve o que está sendo testado, o que é o teste em si e o que esperar dele, ou seja:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```js
+describe('Componente Principal', () => {
+    describe('Quando se abre o app',() => {
+        test(' o nome é mostrado', () => {
+            render(<App />);
+    
+            expect(screen.getByText('ByteBank')).toBeInTheDocument();
+        })
+        test(' o saldo é exibido', () => {
+            render(<App />);
+            expect(screen.getByText('Saldo:')).toBeInTheDocument();
+        })
+        test(' o botão de fazer transação é mostrado', () => {
+            render(<App />);
+            expect(screen.getByText('Realizar operação')).toBeInTheDocument();
+        })
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+    })
+})
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Onde descrevemos que estamos testando o principal componente (que é o app), depois mais uma descrição que são testes de quando se abre o app, no teste fazemos a renderização do componente app e esperamos (no primeiro teste) que na tela tenhamos o texto ByteBank presente no documento.
 
-### `npm run eject`
+O resultado final deve sair como:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```cmd
+ PASS  src/App.test.js
+  Componente Principal
+    Quando se abre o app
+      √  o nome é mostrado (43ms)
+      √  o saldo é exibido (8ms)
+      √  o botão de fazer transação é mostrado (7ms)
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+E assim pegamos o básico de testes, a função `test` pode ser escrita com `it`, no jest é bem comum ver o `it` apesar de eu pessoalmente achar `test` mais semântico
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Organizando os testes
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+No nosso dia a dia com desenvolvimento é muito comum que tenhamos vários casos de teste diferentes para um mesmo componente ou função. Para tornar nosso projeto fácil de entender e contribuir, temos algumas estruturas para auxiliar a criação dos nossos testes automatizados.
 
-## Learn More
+Qual dos cenários abaixo representa uma estrutura adequada para o cenário de um componente com 4 testes unitários?
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Apenas um arquivo para o componente, seguindo a estrutura abaixo.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```js
+describe('nome do componente', () => {
+    it('nome do teste 1', () => {
+        */ código do teste */
+     })
+    it('nome do teste 2', () => {
+        */ código do teste */
+     })
+    it('nome do teste 3', () => {
+        */ código do teste */
+     })
+    it('nome do teste 4', () => {
+        */ código do teste */
+     })
+ })
+```
 
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Temos os 4 casos de teste do componente no mesmo arquivo e usamos o describe para determinar que todos esses casos fazem parte de um mesmo contexto. Podemos usar a função it ou test para criar os testes, mas nesse exemplo estamos usando o it.

@@ -1,6 +1,6 @@
 {
   "conta": {
-    "saldo": 1000
+    "saldo": 1100
   },
   "transacoes": [
     {
@@ -14,6 +14,18 @@
       "valor": "20",
       "data": "26/09/2020",
       "id": 2
+    },
+    {
+      "transacao": "deposito",
+      "valor": "50",
+      "data": "21/11/2020",
+      "id": 3
+    },
+    {
+      "transacao": "deposito",
+      "valor": "50",
+      "data": "21/11/2020",
+      "id": 4
     }
   ]
 }
