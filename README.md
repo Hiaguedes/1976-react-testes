@@ -82,3 +82,46 @@ describe('nome do componente', () => {
 ```
 
 Temos os 4 casos de teste do componente no mesmo arquivo e usamos o describe para determinar que todos esses casos fazem parte de um mesmo contexto. Podemos usar a função it ou test para criar os testes, mas nesse exemplo estamos usando o it.
+
+## Função pura
+
+Sempre que executamos a função passando os mesmos parâmetros, o resultado será o mesmo. Ela não depende de nenhum fator externo ou faz alterações globais na aplicação. Temos a previsão do resultado para poder escrever um teste unitário.
+
+Um função que faz somente a exponenciação de um número, ou soma de dois números são exemplos de funções puras, funções que mudam o resultado de forma aleatória ou que dependem de uma variável externa como um estado são exemplos de funções não puras.
+
+## Testes unitários de funções
+
+Com a ideia de testar funções puras nós fazemos o seguinte teste:
+
+```js
+    	import App, { calcularNovoSaldo } from './App';
+        test(' do tipo saque, espera-se que o saldo diminua', () => {
+            const valoresSaque = {
+                transacao: 'saque', 
+                valor: 10,
+            }
+            const novoSaldo = calcularNovoSaldo(valoresSaque, 110);
+            expect(novoSaldo).toBe(100);
+        })
+```
+
+Primeiro importamos a função que queremos testar e aí fazemos a execução dela esperando que o valor retornado seja o correto.
+
+## Testando componentes com snapshots
+
+Snapshots de componentes são a forma como o componente irá renderizar na tela, e para que você garanta que o componente irá renderizar sempre da mesma forma você usa um método do expect chamado `.toMatchSnapshot()` que irá gerar o resultado na pasta onde o teste está sendo realizado, então caso alguém mude a função essa função será comparada com o arquivo que está em _snapshots_ e que deve ser passado no commit. Uma forma de fazer esse teste é como está abaixo
+
+```js
+import React from 'react';
+import { render } from '@testing-library/react';
+import Transacao from './Transacao';
+
+describe('Componente de transação do extrato', () => {
+    test('Snapshot do componente deve sempre ser o mesmo', () => {
+        const { container } = render(<Transacao data="01/01/1111" tipo="saque" valor="20"/>)
+        expect(container.firstChild).toMatchSnapshot();
+    })
+})
+```
+
+O destruct pegando o elemento container é justamente para sabermos o filho que será gerado pela renderização desse componente

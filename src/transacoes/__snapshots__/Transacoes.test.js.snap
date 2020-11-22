@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Componente de TransaçÕes Snapshot do componente deve sempre ser o mesmo 1`] = `
+<div
+  data-testid="transacoes"
+>
+  <div
+    class="transacao-container"
+  >
+    <p>
+      10/08/2020
+    </p>
+    <p>
+      saque
+    </p>
+    <p>
+      R$ 
+      10
+    </p>
+  </div>
+  <div
+    class="transacao-container"
+  >
+    <p>
+      26/09/2020
+    </p>
+    <p>
+      deposito
+    </p>
+    <p>
+      R$ 
+      20
+    </p>
+  </div>
+  <div
+    class="transacao-container"
+  >
+    <p>
+      21/11/2020
+    </p>
+    <p>
+      deposito
+    </p>
+    <p>
+      R$ 
+      50
+    </p>
+  </div>
+  <div
+    class="transacao-container"
+  >
+    <p>
+      21/11/2020
+    </p>
+    <p>
+      deposito
+    </p>
+    <p>
+      R$ 
+      50
+    </p>
+  </div>
+</div>
+`;
