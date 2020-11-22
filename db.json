@@ -26,6 +26,36 @@
       "valor": "50",
       "data": "21/11/2020",
       "id": 4
+    },
+    {
+      "transacao": "saque",
+      "valor": "10",
+      "data": "2020-11-21",
+      "id": 5
+    },
+    {
+      "transacao": "saque",
+      "valor": "10",
+      "data": "2020-11-21",
+      "id": 6
+    },
+    {
+      "transacao": "saque",
+      "valor": "10",
+      "data": "2020-11-21",
+      "id": 7
+    },
+    {
+      "transacao": "saque",
+      "valor": "10",
+      "data": "2020-11-21",
+      "id": 8
+    },
+    {
+      "transacao": "saque",
+      "valor": "10",
+      "data": "2020-11-21",
+      "id": 9
     }
   ]
 }

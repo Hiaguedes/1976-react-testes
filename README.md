@@ -125,3 +125,44 @@ describe('Componente de transação do extrato', () => {
 ```
 
 O destruct pegando o elemento container é justamente para sabermos o filho que será gerado pela renderização desse componente
+
+## Fire Event para simular ações do usuário
+
+Primeiramente podemos selecionar elementos com o jest com
+
+```js
+            const { getByText, getByTestId, getByLabelText } = render(<App />);
+
+            const saldo = getByText('R$ 1000');
+            const transacao = getByLabelText('Saque');
+            const valor = getByTestId('valor');
+            const botaoTransacao = getByText('Realizar operação');
+```
+
+Onde primeiro simulamos o texto do saldo, a label da transação escolhida, selecionamos o input e o botão, agora podemos fazer os eventos de usuário com:
+
+```js
+            expect(saldo.textContent).toBe('R$ 1000');
+            fireEvent.click(transacao, { target: { value: 'saque' } });
+            fireEvent.change(valor, { target: { value: 10 } });
+            fireEvent.click(botaoTransacao);
+
+            expect(saldo.textContent).toBe('R$ 990');
+```
+
+O primeiro expect é por que é o valor padrão sem alteração da api, ai clicamos no radio de saque, digitamos o valor de 10 e esperamos que o texto mude para 990 reais, sensacional!
+
+Todos esses parâmetros foram pegos com ele já renderizado
+
+Quando vamos escrever um teste de um componente React, precisamos de alguma forma, criá-los no ambiente de testes para que seja possível acessar seus elementos e valores na execução dos testes.
+
+Com o React Testing Library temos uma forma definida de fazer isso, usando:
+
+Render e screen
+
+```js
+render(<Conta saldo={1000} />)
+screen.getByText(''R$1000,00"’)
+```
+
+O render é uma função que o React Testing Library nos fornece para renderizar o componente como um elemento do DOM. Por padrão, esse elemento é renderizado dentro de um elemento raíz, chamado container. Já para acessar um componente, a biblioteca nos fornece o objeto screen, que possui todas as possíveis queries suportadas para buscar elementos no DOM.
