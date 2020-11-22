@@ -239,3 +239,29 @@ Para testar podemos mockar essa função e ver se ela foi chamada ou não da seg
 Onde mockamos a funcaoRealizarTransacao com `const funcaoRealizarTransacao = jest.fn()` e verificamos se ela será chamada com o click no botão em `fireEvent.click(screen.getByTestId('botao-addtransacao'))` e depois esperamos se ela vai ser chamada em `expect(funcaoRealizarTransacao).toHaveBeenCalled();`
 
 O mock de função não testa sua implementação e sim se ela foi chamada ou não
+
+## Quando usar cada teste no seu front end?
+
+Teste unitários -> testes que testam os menores módulos da aplicação como componentes e funções, os testes de snapshots tbm entram nessa
+
+Teste de integração -> integração com o back end e integração entre componentes
+
+e2e -> teste de interação do usuário com a página, normalmente testam o fluxo inteiro da aplicação
+
+É aquele triangulo de testes clássicos mas pensando em front end
+
+Nem sempre os códigos que fazemos precisam ser testados, como landing pages (paginas de marketing) ou códigos que não estão bem implementados. Normalmente códigos que não mexem com dinheiro não precisam ser testados. Testes A/B também não precisam de testes, ao menos que ela seja muito crítica
+
+Geralmente ouvimos que devemos testar todo nosso código e aplicação, mas em alguns momentos, o esforço e tempo de criar os testes podem não ser justificados pelo propósito do nosso projeto.
+
+Dentre as opções abaixo, em qual(is) cenário(s) devemos adicionar testes automatizados?
+
+Nova funcionalidade na aplicação, que vai permitir adicionar comentários nos produtos do site.
+
+É um novo fluxo na aplicação que provavelmente terá comunicação com o backend e outras partes da aplicação. Além da complexidade de desenvolvimento, também temos que levar em consideração a importância para o negócio em garantir que os comentários sejam sempre exibidos corretamente.
+
+Teste A/B que muda o fluxo de transferência no site do ByteBank.
+
+Apesar de ser um teste a/b, sendo nosso código até mesmo descartável, o fluxo que estamos testando é um dos mais importantes da aplicação. É preciso garantir que as transferências funcionem em todas as variantes do experimento.
+
+O conteúdo completo do curso pode ser visto no repositório que estou mesmo, já que eu forkei o projeto original.
