@@ -162,7 +162,80 @@ Render e screen
 
 ```js
 render(<Conta saldo={1000} />)
-screen.getByText(''R$1000,00"’)
+screen.getByText('R$1000,00')
 ```
 
 O render é uma função que o React Testing Library nos fornece para renderizar o componente como um elemento do DOM. Por padrão, esse elemento é renderizado dentro de um elemento raíz, chamado container. Já para acessar um componente, a biblioteca nos fornece o objeto screen, que possui todas as possíveis queries suportadas para buscar elementos no DOM.
+
+## Sobre as querys que eu posso fazer com o testing-library
+
+Link útil: <https://testing-library.com/docs/dom-testing-library/cheatsheet#queries>
+
+<https://testing-library.com/docs/dom-testing-library/api-queries/#queries>
+
+A query `data-testid ` seleciona os elementos que tem um data-testid com algum valor específico, e eles são bem úteis para garantirmos que iremos pegar os elementos corretos.
+
+## Testando APIs
+
+Quando precisamos encontrar elementos de algum componente, usamos as queries do React Testing Library e com código assíncrono não é diferente.
+
+Nesse tipo de teste, qual query devemos usar?
+
+`findBy*` (por exemplo: findByText)
+
+A query findBy retorna uma promise que é completada quando o elemento é encontrado, dessa forma nosso teste espera até que o componente esteja disponível.
+
+Para ver o teste de uma requisição api nós devemos mockar os dados no testes e com isso além de importarmos a api para a aplicação nós fazemos:
+
+```js
+jest.mock('./api')
+```
+
+e o seguinte teste
+
+```js
+describe('RequisiçÕes para a API', () => {
+    test('Exibir lista de transações da API', async () => {
+       api.listaTransacoes.mockResolvedValue([
+            {
+              "valor": '10',
+              "transacao": "saque",
+              "data": "10/08/2020",
+              "id": 1
+            },
+            {
+              "transacao": "deposito",
+              "valor": "20",
+              "data": "26/09/2020",
+              "id": 2
+            }])
+
+        render(<App />)
+
+
+        expect(await screen.findByText('saque')).toBeInTheDocument();
+        expect(screen.getByTestId('transacoes').children.length).toBe(2)
+    })
+})
+```
+
+Por ser assincrono usamos async/await com o findByText que é o geyBy com um then no meio para requisição assíncrona e a função mockResolvedValue com o resultado da função da api que retorna as transações
+
+## E para testarmos uma função que está sendo passada a um componente?
+
+Para testar podemos mockar essa função e ver se ela foi chamada ou não da seguinte forma
+
+```js
+    test('Chamar função de realizar transação com o clique do botão', () => {
+        const funcaoRealizarTransacao = jest.fn()
+        render(<Conta saldo={1000} realizarTransacao={funcaoRealizarTransacao}/>)
+
+        fireEvent.click(screen.getByTestId('botao-addtransacao'))
+
+        expect(funcaoRealizarTransacao).toHaveBeenCalled();
+    })
+```
+
+Onde mockamos a funcaoRealizarTransacao com `const funcaoRealizarTransacao = jest.fn()` e verificamos se ela será chamada com o click no botão em `fireEvent.click(screen.getByTestId('botao-addtransacao'))` e depois esperamos se ela vai ser chamada em `expect(funcaoRealizarTransacao).toHaveBeenCalled();`
+
+O mock de função não testa sua implementação e sim se ela foi chamada ou não

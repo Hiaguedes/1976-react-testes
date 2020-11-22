@@ -60,7 +60,7 @@ const Conta = ({ saldo, realizarTransacao }) => {
             ></input>
 
             <div>
-                <button>
+                <button data-testid="botao-addtransacao">
                     Realizar operação
                 </button>
             </div>
